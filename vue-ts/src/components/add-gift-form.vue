@@ -118,9 +118,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { getGiftSchema } from '../schemas'
-import { GiftInterface } from '../types'
+import { ref } from 'vue';
+import { getGiftSchema } from '../schemas';
+import { GiftInterface } from '../types';
 
 const { initialGift } = defineProps<{
   initialGift: GiftInterface
