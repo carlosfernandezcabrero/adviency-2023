@@ -1,6 +1,6 @@
 <template>
   <form class="grid gap-4" @submit.prevent="handleSubmit">
-    <div class="grid gap-2" v-show="showForm">
+    <div class="grid gap-2" v-if="showForm">
       <div class="flex items-center gap-x-2">
         <div class="flex-1">
           <input

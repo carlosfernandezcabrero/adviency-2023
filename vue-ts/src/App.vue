@@ -45,7 +45,7 @@ function printList() {
 <template>
   <dialog
     class="absolute top-0 grid w-full h-full bg-transparent shadow-xl text-neutral-900 place-content-center"
-    v-show="showList"
+    v-if="showList"
   >
     <div class="flex flex-col flex-1 gap-10 p-8 bg-white rounded">
       <div class="grid gap-10 bg-white rounded" id="printable">
@@ -105,7 +105,7 @@ function printList() {
       <GiftsListSummary :gifts="gifts" />
     </div>
 
-    <footer class="grid gap-2" v-show="gifts.length">
+    <footer class="grid gap-2" v-if="gifts.length">
       <button class="w-full danger" @click="handleDeleteAllGifts">
         Borrar todo
       </button>

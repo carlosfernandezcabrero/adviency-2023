@@ -1,5 +1,5 @@
 <template>
-  <footer class="pt-2 border-t border-gray-500" v-show="gifts.length">
+  <footer class="pt-2 border-t border-gray-500" v-if="gifts.length">
     <p class="font-medium text-center">
       Total:
       {{
