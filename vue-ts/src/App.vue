@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import '@fontsource/mountains-of-christmas/700.css'
 import { onMounted, ref } from 'vue'
 import api from './api'
 import AddGiftForm from './components/add-gift-form.vue'
