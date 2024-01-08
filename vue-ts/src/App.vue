@@ -54,7 +54,7 @@ function printList() {
         <ul class="grid gap-4 list-inside" id="print-list">
           <GiftsListItem
             v-for="gift in gifts"
-            :key="gift.name"
+            :key="`${gift.name}-${gift.owner}`"
             :gift="gift"
             :anonymous="true"
           />
@@ -85,7 +85,7 @@ function printList() {
         <ul class="grid gap-4 list-inside" v-if="gifts.length">
           <GiftsListItem
             v-for="gift in gifts"
-            :key="gift.name"
+            :key="`${gift.name}-${gift.owner}`"
             :gift="gift"
             v-model:gifts="gifts"
             v-model:currentGift="currentGift"
