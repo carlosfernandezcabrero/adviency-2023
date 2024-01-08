@@ -8,6 +8,7 @@
             placeholder="Agrega un regalo"
             v-model.trim="currentGift.name"
             class="block w-full"
+            name="name"
           />
           <p
             class="error-message"
@@ -36,6 +37,7 @@
           placeholder="Url imagen"
           v-model.trim="currentGift.imageUrl"
           class="block w-full"
+          name="imageUrl"
         />
         <p
           class="error-message"
@@ -52,6 +54,7 @@
           placeholder="Propietario"
           v-model.trim="currentGift.owner"
           class="block w-full"
+          name="owner"
         />
         <p
           class="error-message"
@@ -69,6 +72,7 @@
           v-model.number="currentGift.price"
           min="1"
           class="block w-full"
+          name="price"
         />
         <p
           class="error-message"
@@ -86,6 +90,7 @@
           v-model.number="currentGift.quantity"
           min="1"
           class="block w-full"
+          name="quantity"
         />
         <p
           class="error-message"
