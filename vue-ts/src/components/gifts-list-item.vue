@@ -82,7 +82,9 @@ const currentGift = defineModel<GiftInterface>('currentGift')
 const showForm = defineModel<boolean>('showForm')
 
 function handleDeleteGift() {
-  const newGifts = gifts.value.filter(({ id: _id }) => _id !== gift.id)
+  const newGifts = gifts.value.filter(
+    ({ id: _id, owner: _owner }) => _id !== gift.id || _owner !== gift.owner
+  )
 
   gifts.value = newGifts
   localStorage.setItem('gifts', JSON.stringify(newGifts))
