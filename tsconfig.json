@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "strictNullChecks": true,
+        "module": "ESNext",
+        "lib": [
+            "ES2015"
+        ],
+        "moduleResolution": "node",
+    },
+    "include": [
+        "playwright.config.ts",
+        "tests/**/*.ts"
+    ],
+}
