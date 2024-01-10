@@ -18,7 +18,7 @@ const INITIAL_GIFT: GiftInterface = {
 const gifts = ref<GiftInterface[]>([])
 const currentGift = ref<GiftInterface>({ ...INITIAL_GIFT })
 const showForm = ref(false)
-const loadingData = ref(false)
+const loadingData = ref(true)
 const showList = ref(false)
 
 onMounted(async () => {
