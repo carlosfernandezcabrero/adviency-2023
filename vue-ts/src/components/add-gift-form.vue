@@ -70,7 +70,6 @@
           type="number"
           placeholder="Precio"
           v-model.number="currentGift.price"
-          min="1"
           class="block w-full"
           name="price"
         />
@@ -88,7 +87,6 @@
           type="number"
           placeholder="Cantidad"
           v-model.number="currentGift.quantity"
-          min="1"
           class="block w-full"
           name="quantity"
         />
@@ -118,9 +116,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { getGiftSchema } from '../schemas';
-import { GiftInterface } from '../types';
+import { ref } from 'vue'
+import { getGiftSchema } from '../schemas'
+import { GiftInterface } from '../types'
 
 const { initialGift } = defineProps<{
   initialGift: GiftInterface

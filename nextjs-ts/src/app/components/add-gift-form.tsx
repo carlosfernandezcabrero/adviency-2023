@@ -129,7 +129,6 @@ export default function AddGiftForm({
           <div>
             <input
               className="block w-full"
-              min="1"
               name="price"
               placeholder="Precio"
               type="number"
@@ -143,7 +142,6 @@ export default function AddGiftForm({
           <div>
             <input
               className="block w-full"
-              min="1"
               name="quantity"
               placeholder="Cantidad"
               type="number"
