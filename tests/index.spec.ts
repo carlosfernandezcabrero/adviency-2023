@@ -45,6 +45,7 @@ function formatCurrency(value: number): string {
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/')
+  await page.waitForSelector('text=No hay regalos Grinch! Agrega algo!')
 })
 
 test('Should be have title', async ({ page }) => {
