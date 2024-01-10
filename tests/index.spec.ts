@@ -270,3 +270,17 @@ test('Can print', async ({ page }) => {
   await page.getByRole('button', { name: 'Previsualizar' }).click()
   await page.getByRole('button', { name: 'Imprimir' }).click()
 })
+
+test('Validation message of form', async ({ page }) => {
+  await page.getByText('Agregar regalo').click()
+  await page.locator('input[name="quantity"]').fill('0')
+  await page.getByText('Agregar').click()
+
+  await expect(page.getByText('El campo es requerido')).toHaveCount(3)
+  await expect(
+    page.getByText('El numero debe ser un entero positivo')
+  ).toHaveCount(1)
+  await expect(
+    page.getByText('El numero debe ser un numero positivo')
+  ).toHaveCount(1)
+})
