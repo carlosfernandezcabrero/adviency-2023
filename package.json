@@ -11,6 +11,7 @@
   },
   "workspaces": [
     "vue-ts",
-    "nextjs-ts"
+    "nextjs-ts",
+    "sveltekit-ts"
   ]
 }
