@@ -34,27 +34,27 @@
 <form class="grid gap-4" on:submit|preventDefault={handleSubmit}>
 	{#if showForm}
 		<div class="grid gap-2">
-			<div class="flex items-center gap-x-2">
-				<div class="flex-1">
+			<div>
+				<div class="flex items-center gap-x-2">
 					<input
 						type="text"
 						placeholder="Agrega un regalo"
 						bind:value={currentGift.name}
-						class="block w-full"
+						class="flex-1 block w-full"
 						name="name"
 					/>
-					{#if submitted && !textFieldRule.safeParse(currentGift.name).success}
-						<p class="error-message">El campo es requerido</p>
-					{/if}
+					<button
+						on:click={() =>
+							(currentGift.name =
+								giftsSuggestions[Math.floor(Math.random() * giftsSuggestions.length)])}
+						type="button"
+					>
+						Sorprenderme
+					</button>
 				</div>
-				<button
-					on:click={() =>
-						(currentGift.name =
-							giftsSuggestions[Math.floor(Math.random() * giftsSuggestions.length)])}
-					type="button"
-				>
-					Sorprenderme
-				</button>
+				{#if submitted && !textFieldRule.safeParse(currentGift.name).success}
+					<p class="error-message">El campo es requerido</p>
+				{/if}
 			</div>
 			<div>
 				<input

@@ -1,35 +1,33 @@
 <template>
   <form class="grid gap-4" @submit.prevent="handleSubmit">
     <div class="grid gap-2" v-if="showForm">
-      <div class="flex items-center gap-x-2">
-        <div class="flex-1">
+      <div>
+        <div class="flex items-center gap-x-2">
           <input
             type="text"
             placeholder="Agrega un regalo"
             v-model.trim="currentGift.name"
-            class="block w-full"
+            class="flex-1 block w-full"
             name="name"
           />
-          <p
-            class="error-message"
-            v-if="
-              submitted && !textFieldRule.safeParse(currentGift.name).success
+          <button
+            @click="
+              currentGift.name =
+                giftsSuggestions[
+                  Math.floor(Math.random() * giftsSuggestions.length)
+                ]
             "
+            type="button"
           >
-            El campo es requerido
-          </p>
+            Sorprenderme
+          </button>
         </div>
-        <button
-          @click="
-            currentGift.name =
-              giftsSuggestions[
-                Math.floor(Math.random() * giftsSuggestions.length)
-              ]
-          "
-          type="button"
+        <p
+          class="error-message"
+          v-if="submitted && !textFieldRule.safeParse(currentGift.name).success"
         >
-          Sorprenderme
-        </button>
+          El campo es requerido
+        </p>
       </div>
       <div>
         <input

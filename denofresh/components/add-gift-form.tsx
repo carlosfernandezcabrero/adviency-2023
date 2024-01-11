@@ -69,33 +69,33 @@ export default function AddGiftForm({
       {showForm.value &&
         (
           <div className='grid gap-2'>
-            <div className='flex items-center gap-x-2'>
-              <div className='flex-1'>
+            <div>
+              <div className='flex items-center gap-x-2'>
                 <input
-                  className='block w-full'
+                  className='block w-full flex-1'
                   name='name'
                   placeholder='Agrega un regalo'
                   type='text'
                   value={currentGift.value.name}
                   onChange={handleChange}
                 />
-                {submitted.value &&
-                  !textFieldRule.safeParse(currentGift.value.name).success &&
-                  <p className='error-message'>El campo es requerido</p>}
+                <button
+                  type='button'
+                  onClick={() => {
+                    currentGift.value = {
+                      ...currentGift.value,
+                      name: giftsSuggestions[
+                        Math.floor(Math.random() * giftsSuggestions.length)
+                      ],
+                    }
+                  }}
+                >
+                  Sorprenderme
+                </button>
               </div>
-              <button
-                type='button'
-                onClick={() => {
-                  currentGift.value = {
-                    ...currentGift.value,
-                    name: giftsSuggestions[
-                      Math.floor(Math.random() * giftsSuggestions.length)
-                    ],
-                  }
-                }}
-              >
-                Sorprenderme
-              </button>
+              {submitted.value &&
+                !textFieldRule.safeParse(currentGift.value.name).success &&
+                <p className='error-message'>El campo es requerido</p>}
             </div>
             <div>
               <input
