@@ -113,11 +113,11 @@ export default function App() {
                 </div>
               )}
 
-              {gifts.value.length && <GiftsListSummary gifts={gifts} />}
+              {gifts.value.length ? <GiftsListSummary gifts={gifts} /> : null}
             </div>
 
-            {gifts.value.length &&
-              (
+            {gifts.value.length
+              ? (
                 <footer className='grid gap-2'>
                   <button
                     className='danger w-full'
@@ -134,7 +134,8 @@ export default function App() {
                     Previsualizar
                   </button>
                 </footer>
-              )}
+              )
+              : null}
           </section>
         )}
     </>
