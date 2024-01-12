@@ -77,7 +77,7 @@ export default function AddGiftForm({
                   placeholder='Agrega un regalo'
                   type='text'
                   value={currentGift.value.name}
-                  onChange={handleChange}
+                  onInput={handleChange}
                 />
                 <button
                   type='button'
@@ -104,7 +104,7 @@ export default function AddGiftForm({
                 placeholder='Url imagen'
                 type='text'
                 value={currentGift.value.imageUrl}
-                onChange={handleChange}
+                onInput={handleChange}
               />
               {submitted.value &&
                 !textFieldRule.safeParse(currentGift.value.imageUrl).success &&
@@ -117,7 +117,7 @@ export default function AddGiftForm({
                 placeholder='Propietario'
                 type='text'
                 value={currentGift.value.owner}
-                onChange={handleChange}
+                onInput={handleChange}
               />
               {submitted.value &&
                 !textFieldRule.safeParse(currentGift.value.owner).success &&
@@ -130,7 +130,7 @@ export default function AddGiftForm({
                 placeholder='Precio'
                 type='number'
                 value={currentGift.value.price}
-                onChange={handleChange}
+                onInput={handleChange}
               />
               {submitted.value &&
                 !quantityFieldRule.safeParse(Number(currentGift.value.price))
@@ -148,7 +148,7 @@ export default function AddGiftForm({
                 placeholder='Cantidad'
                 type='number'
                 value={currentGift.value.quantity}
-                onChange={handleChange}
+                onInput={handleChange}
               />
               {submitted.value &&
                 !quantityFieldRule.safeParse(
