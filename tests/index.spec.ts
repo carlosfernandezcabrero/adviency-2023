@@ -284,3 +284,10 @@ test('Validation message of form', async ({ page }) => {
     page.getByText('El numero debe ser un numero positivo')
   ).toHaveCount(1)
 })
+
+test("The 'Sorprenderme' button works", async ({ page }) => {
+  await page.getByText('Agregar regalo').click()
+  await page.getByText('Sorprenderme').click()
+
+  await expect(page.locator('input[name="name"]')).not.toHaveValue('')
+})
