@@ -12,6 +12,7 @@
   "workspaces": [
     "vue-ts",
     "nextjs-ts",
-    "sveltekit-ts"
+    "sveltekit-ts",
+    "denofresh"
   ]
 }
