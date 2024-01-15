@@ -1,4 +1,4 @@
-import { GiftInterface } from './types'
+import type { GiftInterface } from './types'
 
 export default {
   gifts: {
