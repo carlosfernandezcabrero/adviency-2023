@@ -11,8 +11,7 @@
   "dependencies": {
     "@fontsource/mountains-of-christmas": "5.0.18",
     "@heroicons/vue": "2.1.1",
-    "vue": "^3.3.11",
-    "zod": "3.22.4"
+    "vue": "^3.3.11"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",
