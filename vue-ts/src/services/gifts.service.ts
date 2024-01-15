@@ -1,4 +1,4 @@
-import { GiftInterface } from '../types'
+import type { GiftInterface } from '../types'
 
 export function upsertGifts(gift: GiftInterface, gifts: GiftInterface[]) {
   return gift.id
