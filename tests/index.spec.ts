@@ -160,28 +160,35 @@ test('Can clone gift', async ({ page }) => {
   const secondGift = GIFTS[1]
 
   await page.getByText('Agregar regalo').click()
-  await fillAndSaveGift(firstGift, page)
+  for (const gift of GIFTS) {
+    await fillAndSaveGift(gift, page)
+  }
   await page.getByRole('button', { name: 'Cerrar' }).click()
 
-  await page.getByLabel('duplicar').click()
-  await page.locator('input[name="owner"]').fill(secondGift.owner)
+  await page.getByLabel('duplicar').first().click()
+
+  const thirdGift = { ...firstGift, quantity: 1, owner: 'Foo' }
+
+  await page.locator('input[name="owner"]').fill(thirdGift.owner)
   await page
     .locator('input[name="quantity"]')
-    .fill(secondGift.quantity.toString())
+    .fill(thirdGift.quantity.toString())
   await page.getByText('Agregar').click()
 
-  await expect(page.locator('li')).toHaveCount(2)
+  await expect(page.locator('li')).toHaveCount(3)
 
-  for (const gift of [firstGift, secondGift]) {
+  for (const { quantity, price, name, owner } of [
+    firstGift,
+    secondGift,
+    thirdGift
+  ]) {
     await expect(
       page.getByRole('heading', {
-        name: `${firstGift.name} (${gift.quantity}) - ${formatCurrency(
-          gift.quantity * firstGift.price
-        )}`
+        name: `${name} (${quantity}) - ${formatCurrency(quantity * price)}`
       })
     ).toBeVisible()
     await expect(
-      page.getByText(`Propietario: ${gift.owner}`, { exact: true })
+      page.getByText(`Propietario: ${owner}`, { exact: true })
     ).toBeVisible()
   }
 })
