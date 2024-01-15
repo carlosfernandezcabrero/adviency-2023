@@ -1,6 +1,6 @@
 import type { GiftInterface } from "../types";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { getGiftSchema } from "../schemas";
 
@@ -24,12 +24,17 @@ export default function AddGiftForm({
   setGifts,
   setShowForm,
 }: PropsInterface) {
+  const [fields, setFields] = useState({...currentGift});
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    setFields({...currentGift});
+  }, [currentGift]);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const {name, value} = event.target;
 
-    setCurrentGift((prevGift) => ({
+    setFields((prevGift) => ({
       ...prevGift,
       [name]: value,
     }));
@@ -40,9 +45,9 @@ export default function AddGiftForm({
     setSubmitted(true);
 
     const giftToSubmit: GiftInterface = {
-      ...currentGift,
-      quantity: Number(currentGift.quantity),
-      price: Number(currentGift.price),
+      ...fields,
+      quantity: Number(fields.quantity),
+      price: Number(fields.price),
     };
 
     if (giftSchema.safeParse(giftToSubmit).success) {
@@ -81,13 +86,13 @@ export default function AddGiftForm({
                 name="name"
                 placeholder="Agrega un regalo"
                 type="text"
-                value={currentGift.name}
+                value={fields.name}
                 onChange={handleChange}
               />
               <button
                 type="button"
                 onClick={() => {
-                  setCurrentGift((prevGift) => ({
+                  setFields((prevGift) => ({
                     ...prevGift,
                     name: giftsSuggestions[Math.floor(Math.random() * giftsSuggestions.length)],
                   }));
@@ -96,7 +101,7 @@ export default function AddGiftForm({
                 Sorprenderme
               </button>
             </div>
-            {submitted && !textFieldRule.safeParse(currentGift.name).success ? (
+            {submitted && !textFieldRule.safeParse(fields.name).success ? (
               <p className="error-message">El campo es requerido</p>
             ) : null}
           </div>
@@ -106,10 +111,10 @@ export default function AddGiftForm({
               name="imageUrl"
               placeholder="Url imagen"
               type="text"
-              value={currentGift.imageUrl}
+              value={fields.imageUrl}
               onChange={handleChange}
             />
-            {submitted && !textFieldRule.safeParse(currentGift.imageUrl).success ? (
+            {submitted && !textFieldRule.safeParse(fields.imageUrl).success ? (
               <p className="error-message">El campo es requerido</p>
             ) : null}
           </div>
@@ -119,10 +124,10 @@ export default function AddGiftForm({
               name="owner"
               placeholder="Propietario"
               type="text"
-              value={currentGift.owner}
+              value={fields.owner}
               onChange={handleChange}
             />
-            {submitted && !textFieldRule.safeParse(currentGift.owner).success ? (
+            {submitted && !textFieldRule.safeParse(fields.owner).success ? (
               <p className="error-message">El campo es requerido</p>
             ) : null}
           </div>
@@ -132,10 +137,10 @@ export default function AddGiftForm({
               name="price"
               placeholder="Precio"
               type="number"
-              value={currentGift.price}
+              value={fields.price}
               onChange={handleChange}
             />
-            {submitted && !quantityFieldRule.safeParse(Number(currentGift.price)).success ? (
+            {submitted && !quantityFieldRule.safeParse(Number(fields.price)).success ? (
               <p className="error-message">El numero debe ser un numero positivo</p>
             ) : null}
           </div>
@@ -145,10 +150,10 @@ export default function AddGiftForm({
               name="quantity"
               placeholder="Cantidad"
               type="number"
-              value={currentGift.quantity}
+              value={fields.quantity}
               onChange={handleChange}
             />
-            {submitted && !quantityFieldRule.safeParse(Number(currentGift.quantity)).success ? (
+            {submitted && !quantityFieldRule.safeParse(Number(fields.quantity)).success ? (
               <p className="error-message">El numero debe ser un entero positivo</p>
             ) : null}
           </div>
@@ -166,7 +171,7 @@ export default function AddGiftForm({
         </button>
         {showForm ? (
           <button className="primary" type="submit">
-            {currentGift.id ? "Editar" : "Agregar"}
+            {fields.id ? "Editar" : "Agregar"}
           </button>
         ) : null}
       </footer>
