@@ -56,7 +56,6 @@ export default function App() {
               currentGift={currentGift}
               gifts={gifts}
               initialGift={INITIAL_GIFT}
-              setCurrentGift={setCurrentGift}
               setGifts={setGifts}
               setShowForm={setShowForm}
               showForm={showForm}

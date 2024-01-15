@@ -7,12 +7,12 @@ import {
 } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { getGiftSchema } from '../schemas'
+import { upsertGifts } from '../services/gifts.service'
 import type { GiftInterface } from '../types'
 
 interface PropsInterface {
   initialGift: GiftInterface
   currentGift: Accessor<GiftInterface>
-  setCurrentGift: (value: GiftInterface) => unknown
   gifts: Accessor<GiftInterface[]>
   setGifts: (value: GiftInterface[]) => unknown
   showForm: Accessor<boolean>
@@ -25,7 +25,6 @@ const giftsSuggestions = ['Pantalla', 'Celular', 'Laptop', 'Audifonos']
 export default function AddGiftForm({
   initialGift,
   currentGift,
-  setCurrentGift,
   gifts,
   setGifts,
   showForm,
@@ -60,28 +59,13 @@ export default function AddGiftForm({
     }
 
     if (giftSchema.safeParse(giftToSubmit).success) {
-      let newGifts: GiftInterface[]
+      const newGifts = upsertGifts(giftToSubmit, gifts())
 
-      if (giftToSubmit.id) {
-        const giftIndex = gifts().findIndex(
-          ({ id: _id }) => _id === giftToSubmit.id
-        )
-
-        newGifts = [...gifts()]
-        newGifts[giftIndex] = giftToSubmit
-      } else {
-        newGifts = [
-          ...gifts(),
-          {
-            ...giftToSubmit,
-            id: giftToSubmit.name
-          }
-        ]
-      }
       localStorage.setItem('gifts', JSON.stringify(newGifts))
 
       batch(() => {
         setGifts(newGifts)
+        setFields({ ...initialGift })
         setSubmitted(false)
       })
     }
