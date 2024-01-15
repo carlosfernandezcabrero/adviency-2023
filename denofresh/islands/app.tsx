@@ -84,7 +84,7 @@ export default function App() {
             <div className='grid gap-12'>
               <AddGiftForm
                 initialGift={INITIAL_GIFT}
-                currentGift={currentGift}
+                currentGift={currentGift.value}
                 gifts={gifts}
                 showForm={showForm}
               />

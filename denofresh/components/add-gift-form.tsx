@@ -1,11 +1,12 @@
 import { Signal, useSignal } from '@preact/signals'
 import { useEffect } from 'preact/hooks'
 import { getGiftSchema } from '../schemas.ts'
+import { upsertGifts } from '../services/gifts.service.ts'
 import { GiftInterface } from '../types.ts'
 
 interface PropsInterface {
   initialGift: GiftInterface
-  currentGift: Signal<GiftInterface>
+  currentGift: GiftInterface
   gifts: Signal<GiftInterface[]>
   showForm: Signal<boolean>
 }
@@ -23,8 +24,8 @@ export default function AddGiftForm({
   const submitted = useSignal(false)
 
   useEffect(() => {
-    fields.value = { ...currentGift.value }
-  }, [currentGift.value])
+    fields.value = { ...currentGift }
+  }, [currentGift])
 
   function handleChange(event: Event) {
     const { name, value } = event.target as HTMLInputElement
@@ -46,25 +47,11 @@ export default function AddGiftForm({
     }
 
     if (giftSchema.safeParse(giftToSubmit).success) {
-      if (giftToSubmit.id) {
-        const giftIndex = gifts.value.findIndex(({ id: _id }) =>
-          _id === giftToSubmit.id
-        )
+      const newGifts = upsertGifts(giftToSubmit, gifts.value)
 
-        gifts.value[giftIndex] = giftToSubmit
-
-        localStorage.setItem('gifts', JSON.stringify(gifts.value))
-        gifts.value = [...gifts.value]
-      } else {
-        const newGifts = [...gifts.value, {
-          ...giftToSubmit,
-          id: giftToSubmit.name,
-        }]
-
-        localStorage.setItem('gifts', JSON.stringify(newGifts))
-        gifts.value = newGifts
-      }
-
+      localStorage.setItem('gifts', JSON.stringify(newGifts))
+      gifts.value = newGifts
+      fields.value = { ...initialGift }
       submitted.value = false
     }
   }
