@@ -298,3 +298,14 @@ test("The 'Sorprenderme' button works", async ({ page }) => {
 
   await expect(page.locator('input[name="name"]')).not.toHaveValue('')
 })
+
+test('Should be clean form after submit', async ({ page }) => {
+  await page.getByText('Agregar regalo').click()
+  await fillAndSaveGift(GIFTS[0], page)
+
+  await expect(page.locator('input[name="name"]')).toHaveValue('')
+  await expect(page.locator('input[name="price"]')).toHaveValue('0')
+  await expect(page.locator('input[name="imageUrl"]')).toHaveValue('')
+  await expect(page.locator('input[name="owner"]')).toHaveValue('')
+  await expect(page.locator('input[name="quantity"]')).toHaveValue('1')
+})
