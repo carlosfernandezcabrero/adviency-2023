@@ -1,4 +1,4 @@
-import { Show, type Accessor, type Setter } from 'solid-js'
+import { Show, batch, type Accessor, type Setter } from 'solid-js'
 import type { GiftInterface } from '../types'
 
 interface PropsInterface {
@@ -58,8 +58,10 @@ export default function GiftsListItem({
             aria-label="editar"
             class="secondary"
             onClick={() => {
-              setCurrentGift({ ...gift })
-              setShowForm(true)
+              batch(() => {
+                setCurrentGift({ ...gift })
+                setShowForm(true)
+              })
             }}
             type="button"
           >
@@ -75,13 +77,15 @@ export default function GiftsListItem({
           <button
             aria-label="duplicar"
             onClick={() => {
-              setCurrentGift({
-                ...gift,
-                id: '',
-                owner: '',
-                quantity: 1
+              batch(() => {
+                setCurrentGift({
+                  ...gift,
+                  id: '',
+                  owner: '',
+                  quantity: 1
+                })
+                setShowForm(true)
               })
-              setShowForm(true)
             }}
             type="button"
           >
