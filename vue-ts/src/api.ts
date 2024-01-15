@@ -1,4 +1,4 @@
-import { GiftInterface } from './types'
+import type { GiftInterface } from './types'
 
 export default {
   gifts: {
@@ -8,7 +8,7 @@ export default {
           const giftsFromLocalStorage = localStorage.getItem('gifts')
 
           if (giftsFromLocalStorage != null) {
-            resolve(JSON.parse(giftsFromLocalStorage))
+            resolve(JSON.parse(giftsFromLocalStorage) as GiftInterface[])
           }
 
           resolve([])
