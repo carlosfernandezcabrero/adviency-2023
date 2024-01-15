@@ -14,7 +14,8 @@
     "vue-ts",
     "nextjs-ts",
     "sveltekit-ts",
-    "denofresh"
+    "denofresh",
+    "solidjs-ts"
   ],
   "dependencies": {
     "@fontsource/mountains-of-christmas": "5.0.18"
