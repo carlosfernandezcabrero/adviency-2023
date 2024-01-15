@@ -81,7 +81,6 @@ export default function App() {
             <AddGiftForm
               currentGift={currentGift}
               initialGift={INITIAL_GIFT}
-              setCurrentGift={setCurrentGift}
               setGifts={setGifts}
               setShowForm={setShowForm}
               showForm={showForm}

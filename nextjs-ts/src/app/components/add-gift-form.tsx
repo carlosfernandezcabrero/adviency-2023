@@ -3,12 +3,12 @@ import type { GiftInterface } from "../types";
 import React, { useEffect, useState } from "react";
 
 import { getGiftSchema } from "../schemas";
+import { upsertGifts } from "../services/gifts.service";
 
 interface PropsInterface {
   currentGift: GiftInterface;
   showForm: boolean;
   initialGift: GiftInterface;
-  setCurrentGift: React.Dispatch<React.SetStateAction<GiftInterface>>;
   setGifts: React.Dispatch<React.SetStateAction<GiftInterface[]>>;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -20,11 +20,10 @@ export default function AddGiftForm({
   currentGift,
   showForm,
   initialGift,
-  setCurrentGift,
   setGifts,
   setShowForm,
 }: PropsInterface) {
-  const [fields, setFields] = useState({...currentGift});
+  const [fields, setFields] = useState({...initialGift});
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
@@ -51,26 +50,15 @@ export default function AddGiftForm({
     };
 
     if (giftSchema.safeParse(giftToSubmit).success) {
-      if (giftToSubmit.id) {
-        setGifts((prevGifts: GiftInterface[]) => {
-          const giftIndex = prevGifts.findIndex(({id: _id}) => _id === giftToSubmit.id);
+      setGifts((prevGifts: GiftInterface[]) => {
+        const newGifts = upsertGifts(giftToSubmit, prevGifts);
 
-          prevGifts[giftIndex] = giftToSubmit;
-          localStorage.setItem("gifts", JSON.stringify(prevGifts));
+        localStorage.setItem("gifts", JSON.stringify(newGifts));
 
-          return [...prevGifts];
-        });
-      } else {
-        setGifts((prevGifts: GiftInterface[]) => {
-          const newGifts = [...prevGifts, {...giftToSubmit, id: giftToSubmit.name}];
+        return newGifts;
+      });
 
-          localStorage.setItem("gifts", JSON.stringify(newGifts));
-
-          return newGifts;
-        });
-      }
-
-      setCurrentGift({...initialGift});
+      setFields({...initialGift});
       setSubmitted(false);
     }
   }
