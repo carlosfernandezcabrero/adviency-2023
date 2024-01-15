@@ -15,5 +15,8 @@
     "nextjs-ts",
     "sveltekit-ts",
     "denofresh"
-  ]
+  ],
+  "dependencies": {
+    "@fontsource/mountains-of-christmas": "5.0.18"
+  }
 }
