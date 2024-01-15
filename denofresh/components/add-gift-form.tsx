@@ -1,4 +1,5 @@
 import { Signal, useSignal } from '@preact/signals'
+import { useEffect } from 'preact/hooks'
 import { getGiftSchema } from '../schemas.ts'
 import { GiftInterface } from '../types.ts'
 
@@ -18,13 +19,18 @@ export default function AddGiftForm({
   gifts,
   showForm,
 }: PropsInterface) {
+  const fields = useSignal({ ...initialGift })
   const submitted = useSignal(false)
+
+  useEffect(() => {
+    fields.value = { ...currentGift.value }
+  }, [currentGift.value])
 
   function handleChange(event: Event) {
     const { name, value } = event.target as HTMLInputElement
 
-    currentGift.value = {
-      ...currentGift.value,
+    fields.value = {
+      ...fields.value,
       [name]: value,
     }
   }
@@ -34,9 +40,9 @@ export default function AddGiftForm({
     submitted.value = true
 
     const giftToSubmit: GiftInterface = {
-      ...currentGift.value,
-      quantity: Number(currentGift.value.quantity),
-      price: Number(currentGift.value.price),
+      ...fields.value,
+      quantity: Number(fields.value.quantity),
+      price: Number(fields.value.price),
     }
 
     if (giftSchema.safeParse(giftToSubmit).success) {
@@ -59,7 +65,6 @@ export default function AddGiftForm({
         gifts.value = newGifts
       }
 
-      currentGift.value = { ...initialGift }
       submitted.value = false
     }
   }
@@ -76,14 +81,14 @@ export default function AddGiftForm({
                   name='name'
                   placeholder='Agrega un regalo'
                   type='text'
-                  value={currentGift.value.name}
+                  value={fields.value.name}
                   onInput={handleChange}
                 />
                 <button
                   type='button'
                   onClick={() => {
-                    currentGift.value = {
-                      ...currentGift.value,
+                    fields.value = {
+                      ...fields.value,
                       name: giftsSuggestions[
                         Math.floor(Math.random() * giftsSuggestions.length)
                       ],
@@ -94,7 +99,7 @@ export default function AddGiftForm({
                 </button>
               </div>
               {submitted.value &&
-                !textFieldRule.safeParse(currentGift.value.name).success &&
+                !textFieldRule.safeParse(fields.value.name).success &&
                 <p className='error-message'>El campo es requerido</p>}
             </div>
             <div>
@@ -103,11 +108,11 @@ export default function AddGiftForm({
                 name='imageUrl'
                 placeholder='Url imagen'
                 type='text'
-                value={currentGift.value.imageUrl}
+                value={fields.value.imageUrl}
                 onInput={handleChange}
               />
               {submitted.value &&
-                !textFieldRule.safeParse(currentGift.value.imageUrl).success &&
+                !textFieldRule.safeParse(fields.value.imageUrl).success &&
                 <p className='error-message'>El campo es requerido</p>}
             </div>
             <div>
@@ -116,11 +121,11 @@ export default function AddGiftForm({
                 name='owner'
                 placeholder='Propietario'
                 type='text'
-                value={currentGift.value.owner}
+                value={fields.value.owner}
                 onInput={handleChange}
               />
               {submitted.value &&
-                !textFieldRule.safeParse(currentGift.value.owner).success &&
+                !textFieldRule.safeParse(fields.value.owner).success &&
                 <p className='error-message'>El campo es requerido</p>}
             </div>
             <div>
@@ -129,11 +134,11 @@ export default function AddGiftForm({
                 name='price'
                 placeholder='Precio'
                 type='number'
-                value={currentGift.value.price}
+                value={fields.value.price}
                 onInput={handleChange}
               />
               {submitted.value &&
-                !quantityFieldRule.safeParse(Number(currentGift.value.price))
+                !quantityFieldRule.safeParse(Number(fields.value.price))
                   .success &&
                 (
                   <p className='error-message'>
@@ -147,12 +152,12 @@ export default function AddGiftForm({
                 name='quantity'
                 placeholder='Cantidad'
                 type='number'
-                value={currentGift.value.quantity}
+                value={fields.value.quantity}
                 onInput={handleChange}
               />
               {submitted.value &&
                 !quantityFieldRule.safeParse(
-                  Number(currentGift.value.quantity),
+                  Number(fields.value.quantity),
                 )
                   .success &&
                 (
@@ -180,7 +185,7 @@ export default function AddGiftForm({
         {showForm.value &&
           (
             <button className='primary' type='submit'>
-              {currentGift.value.id ? 'Editar' : 'Agregar'}
+              {fields.value.id ? 'Editar' : 'Agregar'}
             </button>
           )}
       </footer>
