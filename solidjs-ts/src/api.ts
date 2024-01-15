@@ -2,8 +2,8 @@ import type { GiftInterface } from './types'
 
 export default {
   gifts: {
-    list: (): Promise<GiftInterface[]> => {
-      return new Promise((resolve) =>
+    list: async (): Promise<GiftInterface[]> => {
+      return await new Promise((resolve) =>
         setTimeout(() => {
           const giftsFromLocalStorage = localStorage.getItem('gifts')
 
