@@ -142,10 +142,9 @@ function handleSubmit() {
   if (giftSchema.safeParse(fields.value).success) {
     const newGifts = upsertGifts(fields.value, gifts.value)
 
-    gifts.value = newGifts
     localStorage.setItem('gifts', JSON.stringify(newGifts))
+    gifts.value = newGifts
     fields.value = { ...props.initialGift }
-
     submitted.value = false
   }
 }
