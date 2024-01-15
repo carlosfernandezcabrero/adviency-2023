@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getGiftSchema } from '../schemas';
+	import { upsertGifts } from '../services/gifts.service';
 	import type { GiftInterface } from '../types';
 
 	export let initialGift: GiftInterface;
@@ -8,24 +9,26 @@
 	export let showForm: boolean;
 
 	let submitted = false;
+	let fields = { ...initialGift };
 
 	const giftsSuggestions = ['Pantalla', 'Celular', 'Laptop', 'Audifonos'];
 	const { giftSchema, textFieldRule, quantityFieldRule } = getGiftSchema();
 
+	$: setFields(currentGift);
+
+	function setFields(currentGift: GiftInterface) {
+		fields = { ...currentGift };
+	}
+
 	function handleSubmit() {
 		submitted = true;
 
-		if (giftSchema.safeParse(currentGift).success) {
-			if (currentGift.id) {
-				const giftIndex = gifts.findIndex(({ id: _id }) => _id === currentGift.id);
-				gifts[giftIndex] = { ...currentGift };
-			} else {
-				gifts.push({ ...currentGift, id: currentGift.name });
-			}
+		if (giftSchema.safeParse(fields).success) {
+			const newGifts = upsertGifts(fields, gifts);
 
-			localStorage.setItem('gifts', JSON.stringify(gifts));
-
-			currentGift = { ...initialGift };
+			localStorage.setItem('gifts', JSON.stringify(newGifts));
+			gifts = newGifts;
+			fields = { ...initialGift };
 			submitted = false;
 		}
 	}
@@ -39,20 +42,19 @@
 					<input
 						type="text"
 						placeholder="Agrega un regalo"
-						bind:value={currentGift.name}
+						bind:value={fields.name}
 						class="flex-1 block w-full"
 						name="name"
 					/>
 					<button
 						on:click={() =>
-							(currentGift.name =
-								giftsSuggestions[Math.floor(Math.random() * giftsSuggestions.length)])}
+							(fields.name = giftsSuggestions[Math.floor(Math.random() * giftsSuggestions.length)])}
 						type="button"
 					>
 						Sorprenderme
 					</button>
 				</div>
-				{#if submitted && !textFieldRule.safeParse(currentGift.name).success}
+				{#if submitted && !textFieldRule.safeParse(fields.name).success}
 					<p class="error-message">El campo es requerido</p>
 				{/if}
 			</div>
@@ -60,11 +62,11 @@
 				<input
 					type="text"
 					placeholder="Url imagen"
-					bind:value={currentGift.imageUrl}
+					bind:value={fields.imageUrl}
 					class="block w-full"
 					name="imageUrl"
 				/>
-				{#if submitted && !textFieldRule.safeParse(currentGift.imageUrl).success}
+				{#if submitted && !textFieldRule.safeParse(fields.imageUrl).success}
 					<p class="error-message">El campo es requerido</p>
 				{/if}
 			</div>
@@ -72,11 +74,11 @@
 				<input
 					type="text"
 					placeholder="Propietario"
-					bind:value={currentGift.owner}
+					bind:value={fields.owner}
 					class="block w-full"
 					name="owner"
 				/>
-				{#if submitted && !textFieldRule.safeParse(currentGift.owner).success}
+				{#if submitted && !textFieldRule.safeParse(fields.owner).success}
 					<p class="error-message">El campo es requerido</p>
 				{/if}
 			</div>
@@ -84,11 +86,11 @@
 				<input
 					type="number"
 					placeholder="Precio"
-					bind:value={currentGift.price}
+					bind:value={fields.price}
 					class="block w-full"
 					name="price"
 				/>
-				{#if submitted && !quantityFieldRule.safeParse(currentGift.price).success}
+				{#if submitted && !quantityFieldRule.safeParse(fields.price).success}
 					<p class="error-message">El numero debe ser un numero positivo</p>
 				{/if}
 			</div>
@@ -96,11 +98,11 @@
 				<input
 					type="number"
 					placeholder="Cantidad"
-					bind:value={currentGift.quantity}
+					bind:value={fields.quantity}
 					class="block w-full"
 					name="quantity"
 				/>
-				{#if submitted && !quantityFieldRule.safeParse(currentGift.quantity).success}
+				{#if submitted && !quantityFieldRule.safeParse(fields.quantity).success}
 					<p class="error-message">El numero debe ser un entero positivo</p>
 				{/if}
 			</div>
@@ -112,7 +114,7 @@
 		</button>
 		{#if showForm}
 			<button type="submit" class="primary">
-				{currentGift.id ? 'Editar' : 'Agregar'}
+				{fields.id ? 'Editar' : 'Agregar'}
 			</button>
 		{/if}
 	</footer>
