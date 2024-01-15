@@ -74,7 +74,7 @@ function printList() {
 
     <div class="grid gap-12">
       <AddGiftForm
-        v-model:currentGift="currentGift"
+        :current-gift="currentGift"
         v-model:gifts="gifts"
         v-model:showForm="showForm"
         :initialGift="INITIAL_GIFT"

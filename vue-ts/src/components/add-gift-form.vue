@@ -6,13 +6,13 @@
           <input
             type="text"
             placeholder="Agrega un regalo"
-            v-model.trim="currentGift.name"
+            v-model.trim="fields.name"
             class="flex-1 block w-full"
             name="name"
           />
           <button
             @click="
-              currentGift.name =
+              fields.name =
                 giftsSuggestions[
                   Math.floor(Math.random() * giftsSuggestions.length)
                 ]
@@ -24,7 +24,7 @@
         </div>
         <p
           class="error-message"
-          v-if="submitted && !textFieldRule.safeParse(currentGift.name).success"
+          v-if="submitted && !textFieldRule.safeParse(fields.name).success"
         >
           El campo es requerido
         </p>
@@ -33,15 +33,13 @@
         <input
           type="text"
           placeholder="Url imagen"
-          v-model.trim="currentGift.imageUrl"
+          v-model.trim="fields.imageUrl"
           class="block w-full"
           name="imageUrl"
         />
         <p
           class="error-message"
-          v-if="
-            submitted && !textFieldRule.safeParse(currentGift.imageUrl).success
-          "
+          v-if="submitted && !textFieldRule.safeParse(fields.imageUrl).success"
         >
           El campo es requerido
         </p>
@@ -50,15 +48,13 @@
         <input
           type="text"
           placeholder="Propietario"
-          v-model.trim="currentGift.owner"
+          v-model.trim="fields.owner"
           class="block w-full"
           name="owner"
         />
         <p
           class="error-message"
-          v-if="
-            submitted && !textFieldRule.safeParse(currentGift.owner).success
-          "
+          v-if="submitted && !textFieldRule.safeParse(fields.owner).success"
         >
           El campo es requerido
         </p>
@@ -67,15 +63,13 @@
         <input
           type="number"
           placeholder="Precio"
-          v-model.number="currentGift.price"
+          v-model.number="fields.price"
           class="block w-full"
           name="price"
         />
         <p
           class="error-message"
-          v-if="
-            submitted && !quantityFieldRule.safeParse(currentGift.price).success
-          "
+          v-if="submitted && !quantityFieldRule.safeParse(fields.price).success"
         >
           El numero debe ser un numero positivo
         </p>
@@ -84,15 +78,14 @@
         <input
           type="number"
           placeholder="Cantidad"
-          v-model.number="currentGift.quantity"
+          v-model.number="fields.quantity"
           class="block w-full"
           name="quantity"
         />
         <p
           class="error-message"
           v-if="
-            submitted &&
-            !quantityFieldRule.safeParse(currentGift.quantity).success
+            submitted && !quantityFieldRule.safeParse(fields.quantity).success
           "
         >
           El numero debe ser un entero positivo
@@ -107,25 +100,24 @@
         {{ showForm ? 'Cerrar' : 'Agregar regalo' }}
       </button>
       <button type="submit" class="primary" v-if="showForm">
-        {{ currentGift.id ? 'Editar' : 'Agregar' }}
+        {{ fields.id ? 'Editar' : 'Agregar' }}
       </button>
     </footer>
   </form>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, toRef, watch } from 'vue'
 import { getGiftSchema } from '../schemas'
+import { upsertGifts } from '../services/gifts.service'
 import { GiftInterface } from '../types'
 
-const { initialGift } = defineProps<{
+const props = defineProps<{
   initialGift: GiftInterface
+  currentGift: GiftInterface
 }>()
 
 const gifts = defineModel<GiftInterface[]>('gifts', {
-  required: true
-})
-const currentGift = defineModel<GiftInterface>('currentGift', {
   required: true
 })
 const showForm = defineModel<boolean>('showForm', {
@@ -133,6 +125,13 @@ const showForm = defineModel<boolean>('showForm', {
 })
 
 const submitted = ref(false)
+const fields = ref({ ...props.initialGift })
+
+const currentGiftWatcher = toRef(props, 'currentGift')
+
+watch(currentGiftWatcher, (value) => {
+  fields.value = { ...value }
+})
 
 const giftsSuggestions = ['Pantalla', 'Celular', 'Laptop', 'Audifonos']
 const { giftSchema, textFieldRule, quantityFieldRule } = getGiftSchema()
@@ -140,19 +139,13 @@ const { giftSchema, textFieldRule, quantityFieldRule } = getGiftSchema()
 function handleSubmit() {
   submitted.value = true
 
-  if (giftSchema.safeParse(currentGift.value).success) {
-    if (currentGift.value.id) {
-      const giftIndex = gifts.value.findIndex(
-        ({ id: _id }) => _id === currentGift.value.id
-      )
-      gifts.value[giftIndex] = { ...currentGift.value }
-    } else {
-      gifts.value.push({ ...currentGift.value, id: currentGift.value.name })
-    }
+  if (giftSchema.safeParse(fields.value).success) {
+    const newGifts = upsertGifts(fields.value, gifts.value)
 
-    localStorage.setItem('gifts', JSON.stringify(gifts.value))
+    gifts.value = newGifts
+    localStorage.setItem('gifts', JSON.stringify(newGifts))
+    fields.value = { ...props.initialGift }
 
-    currentGift.value = { ...initialGift }
     submitted.value = false
   }
 }
