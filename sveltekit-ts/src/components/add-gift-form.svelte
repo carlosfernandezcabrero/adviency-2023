@@ -109,7 +109,16 @@
 		</div>
 	{/if}
 	<footer class={`flex ${showForm ? 'justify-between' : 'justify-center'}`}>
-		<button type="button" class="primary" on:click={() => (showForm = !showForm)}>
+		<button
+			type="button"
+			class="primary"
+			on:click={() => {
+				if (!showForm) {
+					fields = { ...initialGift };
+				}
+				showForm = !showForm;
+			}}
+		>
 			{showForm ? 'Cerrar' : 'Agregar regalo'}
 		</button>
 		{#if showForm}

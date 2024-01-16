@@ -309,3 +309,24 @@ test('Should be clean form after submit', async ({ page }) => {
   await expect(page.locator('input[name="owner"]')).toHaveValue('')
   await expect(page.locator('input[name="quantity"]')).toHaveValue('1')
 })
+
+test('Should be clean form after close', async ({ page }) => {
+  const { name, quantity, imageUrl, owner, price } = GIFTS[0]
+
+  await page.getByText('Agregar regalo').click()
+
+  await page.locator('input[name="name"]').fill(name)
+  await page.locator('input[name="price"]').fill(price.toString())
+  await page.locator('input[name="imageUrl"]').fill(imageUrl)
+  await page.locator('input[name="owner"]').fill(owner)
+
+  await page.locator('input[name="quantity"]').fill(quantity.toString())
+  await page.getByRole('button', { name: 'Cerrar' }).click()
+  await page.getByText('Agregar regalo').click()
+
+  await expect(page.locator('input[name="name"]')).toHaveValue('')
+  await expect(page.locator('input[name="price"]')).toHaveValue('0')
+  await expect(page.locator('input[name="imageUrl"]')).toHaveValue('')
+  await expect(page.locator('input[name="owner"]')).toHaveValue('')
+  await expect(page.locator('input[name="quantity"]')).toHaveValue('1')
+})

@@ -152,6 +152,9 @@ export default function AddGiftForm({
           className="primary"
           type="button"
           onClick={() => {
+            if (!showForm) {
+              setFields({...initialGift});
+            }
             setShowForm((prev) => !prev);
           }}
         >

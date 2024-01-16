@@ -96,7 +96,18 @@
       class="flex"
       :class="[showForm ? 'justify-between' : 'justify-center']"
     >
-      <button type="button" class="primary" @click="showForm = !showForm">
+      <button
+        type="button"
+        class="primary"
+        @click="
+          () => {
+            if (!showForm) {
+              fields = { ...props.initialGift }
+            }
+            showForm = !showForm
+          }
+        "
+      >
         {{ showForm ? 'Cerrar' : 'Agregar regalo' }}
       </button>
       <button type="submit" class="primary" v-if="showForm">
