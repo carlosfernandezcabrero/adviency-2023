@@ -330,3 +330,23 @@ test('Should be clean form after close', async ({ page }) => {
   await expect(page.locator('input[name="owner"]')).toHaveValue('')
   await expect(page.locator('input[name="quantity"]')).toHaveValue('1')
 })
+
+test('Should be retrieve data from localstorage', async ({ page }) => {
+  await page.getByText('Agregar regalo').click()
+  await fillAndSaveGift(GIFTS[0], page)
+
+  await page.reload()
+
+  const { name, quantity, price, owner, imageUrl } = GIFTS[0]
+
+  await expect(page.locator('li')).toHaveCount(1)
+  await expect(
+    page.getByRole('heading', {
+      name: `${name} (${quantity}) - ${formatCurrency(quantity * price)}`
+    })
+  ).toBeVisible()
+  await expect(
+    page.getByText(`Propietario: ${owner}`, { exact: true })
+  ).toBeVisible()
+  await expect(page.locator(`img[src="${imageUrl}"]`)).toBeVisible()
+})
