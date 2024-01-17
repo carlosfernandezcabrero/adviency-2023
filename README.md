@@ -12,6 +12,7 @@ Ademas de solucionar el reto, lo he **solucionado con varios frameworks** para p
 + Nextjs 13 con Typescript.
 + Sveltekit con Typescript.
 + Deno Fresh.
++ Solidjs con Typescript
 
 Aparte de lo anterior, he añadido tests E2E para probar que con todos los frameworks la solución tiene la mismas funcionalidades. Para realizar los test E2E he utilizado **Playwright**.
 
