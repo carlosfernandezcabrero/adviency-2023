@@ -15,7 +15,8 @@
     "nextjs-ts",
     "sveltekit-ts",
     "denofresh",
-    "solidjs-ts"
+    "solidjs-ts",
+    "angular17"
   ],
   "dependencies": {
     "@fontsource/mountains-of-christmas": "5.0.18"
