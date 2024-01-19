@@ -1,5 +1,4 @@
 import { Component } from '@angular/core'
-import '@fontsource/mountains-of-christmas/700.css'
 import { GIFT } from '../default-values'
 import type { GiftInterface } from '../types'
 import { AddGiftFormComponent } from './modules/gift/add-gift-form/add-gift-form.component'

@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 
+@font-face {
+  font-family: 'Mountains of Christmas';
+  src: url("/assets/mountains-of-christmas-latin-700-normal.woff2");
+  display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+
 
 @layer base {
   body {
