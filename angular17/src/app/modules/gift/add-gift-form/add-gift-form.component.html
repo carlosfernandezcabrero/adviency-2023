@@ -1,0 +1,52 @@
+<form class="grid gap-4" [formGroup]="fields" (ngSubmit)="handleSubmit()">
+  @if(showForm){
+  <div class="grid gap-2">
+    <div>
+      <div class="flex items-center gap-x-2">
+        <input type="text" placeholder="Agrega un regalo" formControlName="name" class="flex-1 block w-full"
+          name="name" />
+        <button (click)="randomName()" type="button">
+          Sorprenderme
+        </button>
+      </div>
+      @if(submitted && !giftSchema.textFieldRule.safeParse(fields.controls.name.value).success){
+      <p class="error-message">El campo es requerido</p>
+      }
+    </div>
+    <div>
+      <input type="text" placeholder="Url imagen" formControlName="imageUrl" class="block w-full" name="imageUrl" />
+      @if(submitted && !giftSchema.textFieldRule.safeParse(fields.controls.imageUrl.value).success){
+      <p class="error-message">El campo es requerido</p>
+      }
+    </div>
+    <div>
+      <input type="text" placeholder="Propietario" formControlName="owner" class="block w-full" name="owner" />
+      @if(submitted && !giftSchema.textFieldRule.safeParse(fields.controls.owner.value).success){
+      <p class="error-message">El campo es requerido</p>
+      }
+    </div>
+    <div>
+      <input type="number" placeholder="Precio" formControlName="price" class="block w-full" name="price" />
+      @if(submitted && !giftSchema.quantityFieldRule.safeParse(fields.controls.price.value).success){
+      <p class="error-message">El numero debe ser un numero positivo</p>
+      }
+    </div>
+    <div>
+      <input type="number" placeholder="Cantidad" formControlName="quantity" class="block w-full" name="quantity" />
+      @if(submitted && !giftSchema.quantityFieldRule.safeParse(fields.controls.quantity.value).success){
+      <p class="error-message">El numero debe ser un entero positivo</p>
+      }
+    </div>
+  </div>
+  }
+  <footer class="flex" [ngClass]="[showForm ? 'justify-between' : 'justify-center']">
+    <button type="button" class="primary" (click)="closeForm()">
+      {{ showForm ? 'Cerrar' : 'Agregar regalo' }}
+    </button>
+    @if(showForm){
+    <button type="submit" class="primary">
+      {{ currentGift.id ? 'Editar' : 'Agregar' }}
+    </button>
+    }
+  </footer>
+</form>

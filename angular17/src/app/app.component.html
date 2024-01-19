@@ -1,0 +1,62 @@
+@if (showList) {
+<dialog class="absolute top-0 grid w-full h-full bg-transparent shadow-xl text-neutral-900 place-content-center">
+  <div class="flex flex-col flex-1 gap-10 p-8 bg-white rounded">
+    <div class="grid gap-10 bg-white rounded" id="printable">
+      <h2 class="text-5xl text-center title">Comprar:</h2>
+      <ul class="grid gap-4 list-inside" id="print-list">
+        @for(gift of gifts; track "`${gift.name}-${gift.owner}`"){
+        <app-gift-list-item [gift]="gift" [anonymous]="true" />
+        }
+      </ul>
+    </div>
+    <footer class="flex items-center justify-between">
+      <button (click)="showList = false">Cerrar</button>
+      <button class="primary" (click)="printList()">Imprimir</button>
+    </footer>
+  </div>
+</dialog>
+} @else {
+<section class="flex flex-col flex-1 gap-16 p-8 bg-white text-neutral-900 rounded shadow-xl min-w-[500px] z-0">
+  <h1 class="text-5xl font-bold text-center title">Regalos:</h1>
+
+  <div class="grid gap-12">
+    <app-add-gift-form [currentGift]="currentGift" [(gifts)]="gifts" [(showForm)]="showForm" />
+
+    @if(!loadingData){
+    <div>
+      @if(gifts.length){
+      <ul class="grid gap-4 list-inside">
+        @for(gift of gifts; track "`${gift.name}-${gift.owner}`"){
+        <app-gift-list-item [gift]="gift" [(gifts)]="gifts" [(currentGift)]="currentGift" [(showForm)]="showForm" />
+        }
+      </ul>
+      } @else {
+      <p class="font-semibold text-center text-gray-500">
+        No hay regalos Grinch! Agrega algo!
+      </p>
+      }
+    </div>
+    } @else {
+    <div class="flex flex-col items-center mx-auto gap-y-4">
+      <span class="loader"></span>
+      <p class="text-2xl font-bold text-pink-500 animate-pulse">
+        Cargando tus regalos !!!
+      </p>
+    </div>
+    }
+
+    @if(gifts.length){
+    <app-gift-list-summary [gifts]="gifts" />
+    }
+  </div>
+
+  @if(gifts.length){
+  <footer class="grid gap-2">
+    <button class="w-full danger" (click)="handleDeleteAllGifts()">
+      Borrar todo
+    </button>
+    <button class="w-full" (click)="previewList()">Previsualizar</button>
+  </footer>
+  }
+</section>
+}
